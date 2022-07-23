@@ -1,0 +1,32 @@
+@keyframes opacityAnimation {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 25%;
+  }
+  50% {
+    opacity: 50%;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+.trigger-hover span {
+  opacity: 0;
+}
+.trigger-hover:hover {
+  box-shadow: 0 0 9px 0 #6f99d2;
+}
+.trigger-hover:hover span {
+  animation-name: opacityAnimation;
+  animation-timing-function: ease-in-out;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+}
+
+.liner-grad {
+  background: linear-gradient(to right, rgba(71, 84, 105, 0.5), #074096);
+}
+
+/*# sourceMappingURL=Sidebar.css.map */
