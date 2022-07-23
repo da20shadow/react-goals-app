@@ -50,7 +50,7 @@ function LeftMenu() {
     const normalLink = 'flex items-center gap-5 pl-5 py-2 rounded-lg text-md text-gray hover:bg-light-blue dark:text-light-gray dark:hover:text-black m-1';
 
     return (
-        <section className="z-50 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10">
+        <section className="z-50 h-screen  overflow-auto md:hover:overflow-auto pb-10">
 
             {
                 activeSidebar && (
@@ -67,7 +67,7 @@ function LeftMenu() {
                             {/*Close Button*/}
                             <button type="button"
                                     onClick={() => setActiveSidebar(!activeSidebar)}
-                                    className="text-xl border rounded-full p-1 hover:bg-light-gray mt-4 mr-2 sm:block hidden"
+                                    className="text-xl border rounded-full p-1 hover:bg-light-gray mt-4 mr-2"
                             >
                                 <AiOutlineClose/>
                             </button>
