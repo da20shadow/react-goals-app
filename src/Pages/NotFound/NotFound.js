@@ -1,9 +1,9 @@
 function NotFound(){
     return(
         <>
-            <header className={'bg-white shadow'}>
+            <header className={'bg-white shadow mt-16 md:mt-0'}>
                 <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    <h1 className="text-3xl font-bold text-center text-gray-900">Error 404!</h1>
+                    <h1 className="text-3xl font-bold text-center text-red">Error 404!</h1>
                 </div>
             </header>
 
