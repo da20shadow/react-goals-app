@@ -14,10 +14,10 @@ function Footer(){
             </div>
 
             <div className="flex justify-center">
-                <BsFacebook size={'24px'} color={'#074096'} className={'mx-2 cursor-pointer'}/>
-                <BsInstagram size={'24px'} color={'gray'} className={'mx-2 cursor-pointer'}/>
-                <BsTwitter size={'24px'} color={'#2e84fa'} className={'mx-2 cursor-pointer'}/>
-                <BsPinterest size={'24px'} color={'red'} className={'mx-2 cursor-pointer'}/>
+                <BsFacebook size={'24px'} color={'#074096'} className={'mx-2 drop-shadow-lg rounded-full bg-white h-6 w-6 cursor-pointer'}/>
+                <BsInstagram size={'24px'} color={'gray'} className={'mx-2 drop-shadow-lg rounded-md bg-white h-6 w-6 cursor-pointer'}/>
+                <BsTwitter size={'24px'} color={'#2e84fa'} className={'mx-2 drop-shadow-lg rounded-md bg-white h-6 w-6 cursor-pointer'}/>
+                <BsPinterest size={'24px'} color={'red'} className={'mx-2 drop-shadow-lg rounded-full bg-white h-6 w-6 cursor-pointer'}/>
             </div>
 
             <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
