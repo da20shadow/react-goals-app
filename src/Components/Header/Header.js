@@ -15,7 +15,7 @@ import {Link, NavLink} from "react-router-dom";
 
 
 export default function Header() {
-    const {user,activeSidebar,setActiveSidebar,screenSize,setScreenSize,activeProfileMenu, setActiveProfileMenu} = useStateContext();
+    const {user,isLogged,activeSidebar,setActiveSidebar,screenSize,setScreenSize,activeProfileMenu, setActiveProfileMenu} = useStateContext();
 
     useEffect(() => {
         const handleResize = () => setScreenSize(window.innerWidth);
@@ -35,12 +35,21 @@ export default function Header() {
         }
     }, [screenSize]);
 
-    const navigation = [
+    const guestNav = [
+        {name: 'Home', href: '/login', current: false},
+        {name: 'Login', href: '/login', current: false},
+        {name: 'Register', href: '/register', current: false},
+    ]
+    const userNav = [
         {name: 'Dashboard', href: '/account', current: true},
         {name: 'Login', href: '/login', current: false},
         {name: 'Register', href: '/register', current: false},
         {name: 'Calendar', href: '#', current: false},
     ]
+
+    const userHeader = (
+        <p>Hi</p>
+    )
 
     const activeLink = 'bg-gray text-white px-3 py-2 rounded-md text-sm font-medium ';
     const normalLink = 'text-gray-300 hover:bg-gray hover:text-white px-3 py-2 rounded-md text-sm font-medium ';
@@ -62,7 +71,7 @@ export default function Header() {
         <>
 
             {/*Top Fixed News for New Product*/}
-            <div className="bg-dark-blue">
+            <div className="bg-dark-blue hidden sm:block">
                 <div className="max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between flex-wrap">
                         <div className="w-0 flex-1 flex items-center">
@@ -73,8 +82,8 @@ export default function Header() {
                                      fill="none"
                                      viewBox="0 0 24 24"
                                      stroke="currentColor" aria-hidden="true">
-                                <path d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
-                            </svg>
+                                    <path d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
+                                </svg>
                             </span>
                             <p className="ml-3 font-medium text-white truncate">
                                 <span className="md:hidden"> We announced a new product! </span>
@@ -102,7 +111,7 @@ export default function Header() {
             </div>
 
 
-            <div className="min-h-full">
+            <div className="min-h-full z-50">
                 <nav className="bg-light-gray">
                     <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
 
@@ -113,18 +122,22 @@ export default function Header() {
 
                                 {/*Button TODO: Hidden for guests */}
 
-                                {
-                                    activeSidebar
-                                        ? (<button onClick={() => setActiveSidebar(!activeSidebar)}
-                                                   className="inline-flex items-center justify-center p-2 rounded-md text-gray
-                                        hover:text-light-gray hover:bg-gray block sm:hidden" >
-                                            <AiOutlineClose size={'24px'} className={'h-6 w-6'}/>
-                                        </button>)
-                                        : (<button onClick={() => setActiveSidebar(!activeSidebar)}
-                                                   className="inline-flex items-center justify-center p-2 rounded-md text-gray
-                                        hover:text-light-gray hover:bg-gray" >
-                                            <AiOutlineMenu size={'24px'} className={'block h-6 w-6'}/>
-                                        </button>)
+                                {isLogged &&
+                                    <div>
+                                    {
+                                        activeSidebar
+                                            ? (<button onClick={() => setActiveSidebar(!activeSidebar)}
+                                                       className="inline-flex items-center justify-center p-2 rounded-md text-gray
+                                            hover:text-light-gray hover:bg-gray block sm:hidden">
+                                                <AiOutlineClose size={'24px'} className={'h-6 w-6'}/>
+                                            </button>)
+                                            : (<button onClick={() => setActiveSidebar(!activeSidebar)}
+                                                       className="inline-flex items-center justify-center p-2 rounded-md text-gray
+                                            hover:text-light-gray hover:bg-gray">
+                                                <AiOutlineMenu size={'24px'} className={'block h-6 w-6'}/>
+                                            </button>)
+                                    }
+                                    </div>
                                 }
 
                                 {/*LOGO TODO: add logo img */}
@@ -136,7 +149,7 @@ export default function Header() {
 
                             {/*Top Menu TODO: hidden for logged users */}
                             {
-                                user && (
+                                !isLogged && (
                                     <div className="flex space-x-2 sm:space-x-4 items-center items-stretch justify-start">
 
                                         <NavLink to={'/'}
@@ -159,75 +172,77 @@ export default function Header() {
                             }
 
                             {/*Notification & Profile Dropdown TODO: Hidden for guests */}
-                            <div className="absolute inset-y-0 right-0 flex items-center pr-2
+                            {
+                                isLogged && <div className="absolute inset-y-0 right-0 flex items-center pr-2
                                     sm:static sm:inset-auto sm:ml-6 sm:pr-0">
 
-                                {/*Notification button*/}
-                                <button type="button"
-                                        className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                                    <span className="sr-only">View notifications</span>
-                                    <AiOutlineBell className={'h-6 w-6'}/>
-                                </button>
+                                    {/*Notification button*/}
+                                    <button type="button"
+                                            className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                                        <span className="sr-only">View notifications</span>
+                                        <AiOutlineBell className={'h-6 w-6'}/>
+                                    </button>
 
-                                {/*Profile Dropdown*/}
-                                <div className="ml-3 relative">
+                                    {/*Profile Dropdown*/}
+                                    <div className="ml-3 relative">
 
-                                    {/*Avatar*/}
-                                    <div onClick={hideProfileDropdown}>
-                                        <button type="button"
-                                                className="bg-gray-800 flex text-sm rounded-full
+                                        {/*Avatar*/}
+                                        <div onClick={hideProfileDropdown}>
+                                            <button type="button"
+                                                    className="bg-gray-800 flex text-sm rounded-full
                                         focus:outline-none focus:ring-2 focus:ring-offset-2
                                         focus:ring-offset-gray-800 focus:ring-white"
-                                                id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                                            <span className="sr-only">Open user menu</span>
-                                            <img className="h-8 w-8 rounded-full"
-                                                 src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                 alt=""/>
-                                        </button>
-                                    </div>
+                                                    id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                                                <span className="sr-only">Open user menu</span>
+                                                <img className="h-8 w-8 rounded-full"
+                                                     src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                                     alt=""/>
+                                            </button>
+                                        </div>
 
-                                    {/*Dropdown TODO: Add better transition the style classes are added below */}
-                                    <div className={`${showHideProfileDropDown} 
+                                        {/*Dropdown TODO: Add better transition the style classes are added below */}
+                                        <div className={`${showHideProfileDropDown} 
                                     ${activeProfileMenu
-                                        ? 'opacity-0 scale-95'
-                                        : 'opacity-100 scale-100'} ease-in-out duration-500 origin-top-right 
+                                            ? 'opacity-0 scale-95'
+                                            : 'opacity-100 scale-100'} ease-in-out duration-500 origin-top-right 
                                             absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 
                                             bg-white ring-1 ring-black ring-opacity-5 focus:outline-none`}
-                                         >
+                                        >
 
-                                        <NavLink to={'/account'}
-                                                 className={({isActive}) =>
-                                                     isActive
-                                                         ? activeDropdown
-                                                         : dropdown + 'hover:bg-gray-100'
-                                                 }>
-                                            <AiOutlineDashboard className={'mr-2 h-4 w-4'}/> Account
-                                        </NavLink>
+                                            <NavLink to={'/account'}
+                                                     className={({isActive}) =>
+                                                         isActive
+                                                             ? activeDropdown
+                                                             : dropdown + 'hover:bg-gray-100'
+                                                     }>
+                                                <AiOutlineDashboard className={'mr-2 h-4 w-4'}/> Account
+                                            </NavLink>
 
-                                        <NavLink to={'/settings'}
-                                                 className={({isActive}) =>
-                                                     isActive
-                                                         ? activeDropdown
-                                                         : dropdown + 'hover:bg-gray-100'
-                                                 }>
-                                            <AiOutlineSetting className={'mr-2 h-4 w-4'}/> Settings
-                                        </NavLink>
+                                            <NavLink to={'/settings'}
+                                                     className={({isActive}) =>
+                                                         isActive
+                                                             ? activeDropdown
+                                                             : dropdown + 'hover:bg-gray-100'
+                                                     }>
+                                                <AiOutlineSetting className={'mr-2 h-4 w-4'}/> Settings
+                                            </NavLink>
 
-                                        <NavLink to={'/logout'}
-                                                 className={({isActive}) =>
-                                                     isActive
-                                                         ? activeDropdown
-                                                         : dropdown + 'hover:text-red-700 hover:bg-red-100'
-                                                 }>
-                                            <AiOutlineLogout className={'mr-2 h-4 w-4'}/> Sign out
-                                        </NavLink>
+                                            <NavLink to={'/logout'}
+                                                     className={({isActive}) =>
+                                                         isActive
+                                                             ? activeDropdown
+                                                             : dropdown + 'hover:text-red-700 hover:bg-red-100'
+                                                     }>
+                                                <AiOutlineLogout className={'mr-2 h-4 w-4'}/> Sign out
+                                            </NavLink>
+
+                                        </div>
 
                                     </div>
 
+
                                 </div>
-
-
-                            </div>
+                            }
 
 
                         </div>
